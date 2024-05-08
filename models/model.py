@@ -1,9 +1,8 @@
-from pydantic import BaseModel
-from typing import Optional
 from sqlalchemy import Column, Integer, String, Boolean, DateTime
 from datetime import datetime
 from sqlalchemy.ext.declarative import declarative_base
-import pytz
+
+
 
 
 Base = declarative_base()
@@ -22,25 +21,18 @@ class User(Base):
     profile_link = Column(String)
     date_created = Column(DateTime, default=datetime.utcnow, nullable=False)
 
-class UserBase(BaseModel):
-    id: int
-    username: str
-    pw: str
-    email: Optional[str] = None
-    firstname: Optional[str] = None
-    lastname: Optional[str] = None
-    phone: Optional[str] = None
-    linkedin: Optional[str] = None
-    confirmed: bool = False
-    profile_link: Optional[str] = None
-    date_created: datetime = datetime.now(pytz.timezone("US/Eastern"))
 
-class DogSchema(BaseModel):
-    name: str
-    
-
-
-    
-
-
-
+    def as_dict(self):
+        return{
+            "id": self.id,
+            "username": self.username,
+            "pw": self.pw,
+            "email": self.email,
+            "firstname": self.firstname,
+            "lastname": self.lastname,
+            "phone": self.phone,
+            "linkedin": self.linkedin,
+            "confirmed": self.confirmed,
+            "profile_link": self.profile_link,
+            "date_created": self.date_created
+        }
